@@ -1,0 +1,6 @@
+
+1) use this implementation, the sqlite one is too slow!
+    https://builtin.com/machine-learning/index-based-search-engine-python
+
+2) Use simple frontend
+    https://plainenglish.io/blog/build-your-own-search-engine-using-python-part-2-abdb6fe3e10b

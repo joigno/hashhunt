@@ -1,4 +1,5 @@
-import math, shelve
+import math
+from sqlitedict import SqliteDict
 
 from .timing import timing
 from .analysis import analyze
@@ -10,37 +11,32 @@ class Index:
             self.index = {}
             self.documents = {}
         else:
-            # writeback example: https://docs.python.org/3/library/shelve.html#example
-            # flag https://docs.python.org/3/library/dbm.html#dbm.open
-            self.index = shelve.open('db/index.shelve', flag='c', writeback=False)
-            self.documents = shelve.open('db/documents.shelve', flag='c', writeback=False)
-            # # as d was opened WITHOUT writeback=True, beware:
-            # d['xx'] = [0, 1, 2]        # this works as expected, but...
-            # d['xx'].append(3)          # *this doesn't!* -- d['xx'] is STILL [0, 1, 2]!
-
-            # # having opened d without writeback=True, you need to code carefully:
-            # temp = d['xx']             # extracts the copy
-            # temp.append(5)             # mutates the copy
-            # d['xx'] = temp             # stores the copy right back, to persist it
+            # https://pypi.org/project/sqlitedict/
+            self.index = SqliteDict('db/index.sqlite')
+            self.documents = SqliteDict('db/documents.sqlite')
 
     def __del__(self):
+        print('CLOSING...')
         if self.persistent:
-            self.index.close() # close is calling sync() inside.
-            self.documents.close()
+            #self.index.close() # close is calling sync() inside.
+            #self.documents.close()
+            pass
 
 
     def index_document(self, document):
-        print('document.ID = ', document.ID)
-        if document.ID not in self.documents:
+        if document.ID not in self.documents.keys():
             self.documents[document.ID] = document
             document.analyze()
+            #self.documents.commit()
 
         for token in analyze(document.fulltext):
-            if token not in self.index:
-                self.index[token] = set()
+            if token not in self.index.keys():
+                self.index[token] =  set()
             token_set = self.index[token]
             token_set.add(document.ID)
             self.index[token] = token_set
+            # sqlite commit needed
+        #self.index.commit()
 
     def document_frequency(self, token):
         return len(self.index.get(token, set()))

@@ -11,8 +11,10 @@ from search.index import Index
 def index_documents(documents, index):
     for i, document in enumerate(documents):
         index.index_document(document)
-        if i % 5000 == 0:
+        if i % 10 == 0:
             print(f'Indexed {i} documents', end='\r')
+            index.documents.commit()
+            index.index.commit()
     return index
 
 
@@ -25,5 +27,5 @@ if __name__ == '__main__':
     index = index_documents(load_documents(), Index())
     print(f'Index contains {len(index.documents)} documents')
 
-    print(index.search('dafea', search_type='AND'))
-    print(index.search('0xdafea', search_type='AND'))
+    print(index.search('decaf', search_type='AND'))
+    print(index.search('0xdecaf', search_type='AND'))
