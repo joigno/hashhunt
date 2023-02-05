@@ -25,6 +25,8 @@ class Index:
         # Manning, Hinrich and Schütze use log10, so we do too, even though it
         # doesn't really matter which log we use anyway
         # https://nlp.stanford.edu/IR-book/html/htmledition/inverse-document-frequency-1.html
+        if self.document_frequency(token) == 0:
+            return 0.0
         return math.log10(len(self.documents) / self.document_frequency(token))
 
     def _results(self, analyzed_query):
