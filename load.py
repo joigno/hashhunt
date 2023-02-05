@@ -14,7 +14,7 @@ def load_documents():
             url = element.findtext('./url')
             abstract = element.findtext('./abstract')
 
-            yield Abstract(ID=doc_id, title=title, url=url, abstract=abstract)
+            yield Abstract(ID=str(doc_id), title=title, url=url, abstract=abstract)
 
             doc_id += 1
             element.clear()

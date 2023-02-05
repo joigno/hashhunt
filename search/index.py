@@ -1,14 +1,36 @@
-import math
+import math, shelve
 
 from .timing import timing
 from .analysis import analyze
 
 class Index:
-    def __init__(self):
-        self.index = {}
-        self.documents = {}
+    def __init__(self, persistent=True):
+        self.persistent = persistent
+        if not persistent:
+            self.index = {}
+            self.documents = {}
+        else:
+            # writeback example: https://docs.python.org/3/library/shelve.html#example
+            # flag https://docs.python.org/3/library/dbm.html#dbm.open
+            self.index = shelve.open('db/index.shelve', flag='c', writeback=False)
+            self.documents = shelve.open('db/documents.shelve', flag='c', writeback=False)
+            # # as d was opened WITHOUT writeback=True, beware:
+            # d['xx'] = [0, 1, 2]        # this works as expected, but...
+            # d['xx'].append(3)          # *this doesn't!* -- d['xx'] is STILL [0, 1, 2]!
+
+            # # having opened d without writeback=True, you need to code carefully:
+            # temp = d['xx']             # extracts the copy
+            # temp.append(5)             # mutates the copy
+            # d['xx'] = temp             # stores the copy right back, to persist it
+
+    def __del__(self):
+        if self.persistent:
+            self.index.close() # close is calling sync() inside.
+            self.documents.close()
+
 
     def index_document(self, document):
+        print('document.ID = ', document.ID)
         if document.ID not in self.documents:
             self.documents[document.ID] = document
             document.analyze()
@@ -16,7 +38,9 @@ class Index:
         for token in analyze(document.fulltext):
             if token not in self.index:
                 self.index[token] = set()
-            self.index[token].add(document.ID)
+            token_set = self.index[token]
+            token_set.add(document.ID)
+            self.index[token] = token_set
 
     def document_frequency(self, token):
         return len(self.index.get(token, set()))
