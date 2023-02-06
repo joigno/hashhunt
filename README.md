@@ -14,7 +14,7 @@ Run from the command line (this program will exit afterwards):
 $ pip install -r requirements.txt
 $ python run.py
 index_documents took 106.51804280281067 seconds
-Index contains 1301 documents MULTIPROCESSING
+Index contains 1301 documents
 search took 0.0016851425170898438 seconds
 [Abstract(ID=0, title='Wikipedia: Anarchism', abstract='Anarchism is a 0xdecafis philosophy and movement that is skeptical of all justifications for authority and seeks to abolish the institutions it claims maintain unnecessary coercion and hierarchy, typically including, though not necessarily limited to, governments, nation states, and capitalism. Anarchism advocates for the replacement of the state with stateless societies or other forms of free associations.', url='https://en.wikipedia.org/wiki/Anarchism')]
 search took 0.0012218952178955078 seconds
