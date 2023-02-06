@@ -51,7 +51,7 @@ if __name__ == '__main__':
     #    download_wikipedia_abstracts()
 
     index = index_documents(load_documents(), Index())
-    print(f'Index contains {len(index.documents)} documents MULTIPROCESSING')
+    print(f'Index contains {len(index.documents)} documents')
 
     print(index.search('decaf', search_type='AND'))
     print(index.search('0xdecaf', search_type='AND'))
