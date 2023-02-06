@@ -1,8 +1,10 @@
-import math
-from sqlitedict import SqliteDict
+import math, pickle
 
 from .timing import timing
 from .analysis import analyze
+from .filedict import FileDict
+
+
 
 class Index:
     def __init__(self, persistent=True):
@@ -12,11 +14,11 @@ class Index:
             self.documents = {}
         else:
             # https://pypi.org/project/sqlitedict/
-            self.index = SqliteDict('db/index.sqlite')
-            self.documents = SqliteDict('db/documents.sqlite')
+            self.index = FileDict('db/index2')
+            self.documents = FileDict('db/documents2')
 
     def __del__(self):
-        print('CLOSING...')
+        #print('CLOSING...')
         if self.persistent:
             #self.index.close() # close is calling sync() inside.
             #self.documents.close()
@@ -24,19 +26,16 @@ class Index:
 
 
     def index_document(self, document):
-        if document.ID not in self.documents.keys():
+        if document.ID not in self.documents:
             self.documents[document.ID] = document
             document.analyze()
-            #self.documents.commit()
 
-        for token in analyze(document.fulltext):
-            if token not in self.index.keys():
-                self.index[token] =  set()
-            token_set = self.index[token]
-            token_set.add(document.ID)
-            self.index[token] = token_set
-            # sqlite commit needed
-        #self.index.commit()
+            for token in analyze(document.fulltext):
+                if token not in self.index:
+                    self.index[token] =  set()
+                token_set = self.index[token]
+                token_set.add(document.ID)
+                self.index[token] = token_set
 
     def document_frequency(self, token):
         return len(self.index.get(token, set()))
@@ -50,7 +49,7 @@ class Index:
         return math.log10(len(self.documents) / self.document_frequency(token))
 
     def _results(self, analyzed_query):
-        return [self.index.get(token, set()) for token in analyzed_query]
+        return [self.index[token] for token in analyzed_query]
 
     @timing
     def search(self, query, search_type='AND', rank=False):

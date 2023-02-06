@@ -4,3 +4,10 @@
 
 2) Use simple frontend
     https://plainenglish.io/blog/build-your-own-search-engine-using-python-part-2-abdb6fe3e10b
+
+
+----------------------------
+
+DONE!
+
+3) DO Filesystem version!! pickle object local files!
