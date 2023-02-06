@@ -1,6 +1,6 @@
-# python-searchengine
+# hashhunt
 
-Simple search engine implementation in Python for illustrative purposes to go with [this blog post](https://bart.degoe.de/building-a-full-text-search-engine-150-lines-of-code/).
+Simple search engine implementation in Python for illustrative purposes to go with [this blog post](https://bart.degoe.de/building-a-full-text-search-engine-150-lines-of-code/). Persists in disk with local files.
 
 ## Requirements
 
