@@ -37,7 +37,7 @@ def index_documents_multip(documents, index):
                 p.join()
             print(f'Indexed {i} documents MULTIPROCESSING', end='\r')
             procs = []
-        if i == 160:
+        if i == 640:
             break
     return index
 

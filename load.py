@@ -7,7 +7,7 @@ from search.documents import Abstract
 def load_documents():
     start = time.time()
     #with gzip.open('data/sample.xml.gz', 'rb') as f:
-    with open('data/sample-10000.xml', 'rb') as f:
+    with open('data/sample-100k.xml', 'rb') as f:
         doc_id = 0
         for _, element in etree.iterparse(f, events=('end',), tag='doc'):
             title = element.findtext('./title')

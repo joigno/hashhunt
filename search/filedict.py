@@ -45,7 +45,7 @@ class FileDict(object):
 
     def __getitem__(self, key):
         _key = self._keytransform(key)
-        self.wait_semafore(_key)
+        #self.wait_semafore(_key)
         fname = self.generate_filename(_key)
         try:
             file = open(fname, 'rb')
@@ -54,25 +54,25 @@ class FileDict(object):
             self.free_semafore(_key)
             return set()
         file.close()
-        self.free_semafore(_key)
+        #self.free_semafore(_key)
         return obj
 
     def __setitem__(self, key, value):
         _key = self._keytransform(key)
-        self.wait_semafore(_key)
+        #self.wait_semafore(_key)
         fname = self.generate_filename(_key)
         file = open(fname, 'wb')
         obj = pickle.dump(value, file)
         file.close()
-        self.free_semafore(_key)
+        #self.free_semafore(_key)
 
 
     def __delitem__(self, key):
         _key = self._keytransform(key)
-        self.wait_semafore(_key)
+        #self.wait_semafore(_key)
         fname = self.generate_filename(_key)
         os.remove(fname)
-        self.free_semafore(_key)
+        #self.free_semafore(_key)
 
 
     def __iter__(self):
