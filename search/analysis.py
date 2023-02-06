@@ -25,7 +25,9 @@ def lowercase_filter(tokens):
     return [token.lower() for token in tokens]
 
 def punctuation_filter(tokens):
-    return [PUNCTUATION.sub('', token) for token in tokens]
+    #return [PUNCTUATION.sub('', token) for token in tokens]
+    return [token.replace('/', '') for token in tokens]
+    
 
 def stopword_filter(tokens):
     return [token for token in tokens if token not in STOPWORDS]
@@ -38,6 +40,6 @@ def analyze(text):
     tokens = lowercase_filter(tokens)
     tokens = punctuation_filter(tokens)
     #tokens = stopword_filter(tokens)
-    tokens = stem_filter(tokens)
+    #tokens = stem_filter(tokens)
     
     return [token for token in tokens if token]

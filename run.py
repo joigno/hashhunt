@@ -13,8 +13,10 @@ from search.documents import Abstract
 def index_documents(documents, index):
     for i, document in enumerate(documents):
         index.index_document(document)
-        if i % 10 == 0:
+        if i % 100 == 0:
             print(f'Indexed {i} documents', end='\r')
+        if i == 1300:
+            break
     return index
 
 
@@ -32,12 +34,12 @@ def index_documents_multip(documents, index):
         proc.start()
         procs.append( proc )
         #index.index_document(document)
-        if i % 40 == 0:
+        if i % 100 == 0:
             for p in procs:
                 p.join()
             print(f'Indexed {i} documents MULTIPROCESSING', end='\r')
             procs = []
-        if i == 640:
+        if i == 1300:
             break
     return index
 
@@ -48,7 +50,7 @@ if __name__ == '__main__':
     #if not os.path.exists('data/enwiki-latest-abstract.xml.gz'):
     #    download_wikipedia_abstracts()
 
-    index = index_documents_multip(load_documents(), Index())
+    index = index_documents(load_documents(), Index())
     print(f'Index contains {len(index.documents)} documents MULTIPROCESSING')
 
     print(index.search('decaf', search_type='AND'))
