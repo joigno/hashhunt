@@ -13,14 +13,14 @@ Run from the command line (this program will exit afterwards):
 ```bash
 $ pip install -r requirements.txt
 $ python run.py
-Parsing XML took 701.6900851726532 seconds
-index_documents took 701.6901140213013 seconds
-Index contains 6274026 documents
-search took 0.2980232238769531 milliseconds
-search took 0.07561087608337402 seconds
-search took 0.1850128173828125 milliseconds
-search took 0.2769007682800293 seconds
-```
+index_documents took 106.51804280281067 seconds
+Index contains 1301 documents MULTIPROCESSING
+search took 0.0016851425170898438 seconds
+[Abstract(ID=0, title='Wikipedia: Anarchism', abstract='Anarchism is a 0xdecafis philosophy and movement that is skeptical of all justifications for authority and seeks to abolish the institutions it claims maintain unnecessary coercion and hierarchy, typically including, though not necessarily limited to, governments, nation states, and capitalism. Anarchism advocates for the replacement of the state with stateless societies or other forms of free associations.', url='https://en.wikipedia.org/wiki/Anarchism')]
+search took 0.0012218952178955078 seconds
+[Abstract(ID=0, title='Wikipedia: Anarchism', abstract='Anarchism is a 0xdecafis philosophy and movement that is skeptical of all justifications for authority and seeks to abolish the institutions it claims maintain unnecessary coercion and hierarchy, typically including, though not necessarily limited to, governments, nation states, and capitalism. Anarchism advocates for the replacement of the state with stateless societies or other forms of free associations.', url='https://en.wikipedia.org/wiki/Anarchism')]
+search took 0.0022618770599365234 seconds
+[]```
 
 Run from interactive console:
 ```python
