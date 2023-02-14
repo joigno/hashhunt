@@ -1,5 +1,7 @@
-import os, pickle, time
+import os, time
 import multiprocessing
+import pickle
+import bz2
 
 
 class FileDict(object):
@@ -47,12 +49,14 @@ class FileDict(object):
         _key = self._keytransform(key)
         #self.wait_semafore(_key)
         fname = self.generate_filename(_key)
-        try:
-            file = open(fname, 'rb')
-            obj = pickle.load(file)
-        except:
-            self.free_semafore(_key)
-            return set()
+        #try:
+        file = bz2.BZ2File(fname, 'rb')
+        obj = pickle.load(file)
+            #file = open(fname, 'rb')
+            #obj = pickle.load(file)
+        #except:
+        #    self.free_semafore(_key)
+        #    return set()
         file.close()
         #self.free_semafore(_key)
         return obj
@@ -61,9 +65,14 @@ class FileDict(object):
         _key = self._keytransform(key)
         #self.wait_semafore(_key)
         fname = self.generate_filename(_key)
-        file = open(fname, 'wb')
-        obj = pickle.dump(value, file)
-        file.close()
+
+        with bz2.BZ2File(fname, 'w') as f: 
+            pickle.dump(value, f)
+
+        #file = open(fname, 'wb')
+        #obj = pickle.dump(value, file)
+        #file.close()
+        
         #self.free_semafore(_key)
 
 

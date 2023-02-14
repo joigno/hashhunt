@@ -65,6 +65,7 @@ class Index:
         if search_type not in ('AND', 'OR'):
             return []
 
+        query = query.replace('0x', '')
         analyzed_query = analyze(query)
         results = self._results(analyzed_query)
         if search_type == 'AND':

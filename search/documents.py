@@ -8,12 +8,12 @@ class Abstract:
     """Wikipedia abstract"""
     ID: int
     title: str
-    abstract: str
+    #abstract: str
     url: str
 
     @property
     def fulltext(self):
-        return ' '.join([self.title, self.abstract])
+        return self.title#.replace('0x', '') #' '.join([self.title, self.abstract])
 
     def analyze(self):
         self.term_frequencies = Counter(analyze(self.fulltext))

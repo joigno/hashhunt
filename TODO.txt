@@ -5,6 +5,11 @@
 2) Use simple frontend
     https://plainenglish.io/blog/build-your-own-search-engine-using-python-part-2-abdb6fe3e10b
 
+4) stackoverflow https://ethereum.stackexchange.com/questions/66050/find-the-address-of-the-wallet-know-almost-all-the-letters/144254#144254
+
+5) online question https://www.reddit.com/r/etherscan/comments/wtc5zd/way_to_search_with_partial_address/
+
+6) only query addresses not the full transaction.
 
 ----------------------------
 

@@ -15,7 +15,7 @@ def index_documents(documents, index):
         index.index_document(document)
         if i % 100 == 0:
             print(f'Indexed {i} documents', end='\r')
-        if i == 1300:
+        if i == 2500:
             break
     return index
 
@@ -39,7 +39,7 @@ def index_documents_multip(documents, index):
                 p.join()
             print(f'Indexed {i} documents MULTIPROCESSING', end='\r')
             procs = []
-        if i == 1300:
+        if i == 2500:
             break
     return index
 
@@ -53,6 +53,6 @@ if __name__ == '__main__':
     index = index_documents(load_documents(), Index())
     print(f'Index contains {len(index.documents)} documents')
 
-    print(index.search('decaf', search_type='AND'))
-    print(index.search('0xdecaf', search_type='AND'))
+    print(index.search('1acec', search_type='AND'))
+    print(index.search('522d5', search_type='AND'))
     print(index.search('0xbadcafe', search_type='AND'))
