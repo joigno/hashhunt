@@ -49,15 +49,17 @@ class FileDict(object):
         _key = self._keytransform(key)
         #self.wait_semafore(_key)
         fname = self.generate_filename(_key)
-        #try:
-        file = bz2.BZ2File(fname, 'rb')
-        obj = pickle.load(file)
-            #file = open(fname, 'rb')
+        try:
+            #file = bz2.BZ2File(fname, 'rb')
             #obj = pickle.load(file)
-        #except:
+            file = open(fname, 'rb')
+            obj = pickle.load(file)
+            file.close()
+            #print('DEBUG FIND INDEX FILE!!!')
+        except:
+            return None
         #    self.free_semafore(_key)
         #    return set()
-        file.close()
         #self.free_semafore(_key)
         return obj
 
@@ -66,12 +68,12 @@ class FileDict(object):
         #self.wait_semafore(_key)
         fname = self.generate_filename(_key)
 
-        with bz2.BZ2File(fname, 'w') as f: 
-            pickle.dump(value, f)
+        #with bz2.BZ2File(fname, 'w') as f: 
+        #    pickle.dump(value, f)
 
-        #file = open(fname, 'wb')
-        #obj = pickle.dump(value, file)
-        #file.close()
+        file = open(fname, 'wb')
+        obj = pickle.dump(value, file)
+        file.close()
         
         #self.free_semafore(_key)
 
@@ -92,3 +94,16 @@ class FileDict(object):
 
     def _keytransform(self, key):
         return str(key)
+
+    def extend_sets(self, ext_dic):
+        for k in ext_dic:
+            current_vals = self[k]
+            if not current_vals:
+                current_vals = set()
+            current_vals.update( ext_dic[k] )
+            #assert( len(current_vals) == l1 + len(vals) )
+            self[k] = current_vals
+
+    def update(self, tuple_list):
+        for key, val in tuple_list:
+            self[key] = val

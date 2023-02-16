@@ -3,7 +3,7 @@ import csv
 
 
 print('<feed>')
-with open('data/eth-10000.csv', newline='') as csvfile:
+with open('data/eth-100k.csv', newline='') as csvfile:
     spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
     for row in spamreader:
         #print(row[0])

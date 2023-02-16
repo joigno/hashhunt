@@ -13,9 +13,13 @@ from search.documents import Abstract
 def index_documents(documents, index):
     for i, document in enumerate(documents):
         index.index_document(document)
-        if i % 100 == 0:
+        if i % 10000 == 0:
             print(f'Indexed {i} documents', end='\r')
-        if i == 2500:
+            #print('Downloading to disk...', end='\r')
+            print(f'Starting disk persistence (total {i} documents) ...', end='\r')
+            index.persist_to_disk()
+            print(f'Ending disk persistence (total {i} documents) ...', end='\r')
+        if i == 50000:
             break
     return index
 
@@ -39,8 +43,8 @@ def index_documents_multip(documents, index):
                 p.join()
             print(f'Indexed {i} documents MULTIPROCESSING', end='\r')
             procs = []
-        if i == 2500:
-            break
+        #if i == 2500:
+        #    break
     return index
 
 
@@ -51,7 +55,7 @@ if __name__ == '__main__':
     #    download_wikipedia_abstracts()
 
     index = index_documents(load_documents(), Index())
-    print(f'Index contains {len(index.documents)} documents')
+    print(f'Index contains {len(index)} documents')
 
     print(index.search('1acec', search_type='AND'))
     print(index.search('522d5', search_type='AND'))

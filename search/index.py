@@ -9,14 +9,9 @@ from .filedict import FileDict
 class Index:
     def __init__(self, persistent=True):
         self.persistent = persistent
-        if not persistent:
-            self.index = {}
-            self.documents = {}
-        else:
-            # https://pypi.org/project/sqlitedict/
-            self.index = FileDict('db/index2')
-            self.documents = FileDict('db/documents2')
-
+        self.index = {}
+        self.documents = {}
+        
     def __del__(self):
         #print('CLOSING...')
         if self.persistent:
@@ -24,18 +19,15 @@ class Index:
             #self.documents.close()
             pass
 
-
     def index_document(self, document):
         if document.ID not in self.documents:
             self.documents[document.ID] = document
             document.analyze()
 
-            for token in analyze(document.fulltext):
-                if token not in self.index:
-                    self.index[token] =  set()
-                token_set = self.index[token]
-                token_set.add(document.ID)
-                self.index[token] = token_set
+        for token in analyze(document.fulltext):
+            if token not in self.index:
+                self.index[token] = set()
+            self.index[token].add(document.ID)
 
     def document_frequency(self, token):
         return len(self.index.get(token, set()))
@@ -49,7 +41,24 @@ class Index:
         return math.log10(len(self.documents) / self.document_frequency(token))
 
     def _results(self, analyzed_query):
-        return [self.index[token] for token in analyzed_query]
+        ret_val = [self.index[token] for token in analyzed_query]
+        return [l for l in ret_val if l]
+
+    def persist_to_disk(self):
+        if self.persistent:
+            disk_docs = FileDict('db/documents')
+            for k in self.documents:
+                disk_docs[k] = self.documents[k]
+            self.documents = {}
+            disk_index = FileDict('db/index')
+            disk_index.extend_sets( self.index )        
+            self.index = {}
+
+    def __len__(self):
+        if self.persistent:
+            return len(FileDict('db/documents'))
+        else:
+            return len(self.index)
 
     @timing
     def search(self, query, search_type='AND', rank=False):
@@ -65,16 +74,21 @@ class Index:
         if search_type not in ('AND', 'OR'):
             return []
 
+        if self.persistent:
+            self.documents = FileDict('db/documents')
+            self.index = FileDict('db/index')
+
         query = query.replace('0x', '')
         analyzed_query = analyze(query)
         results = self._results(analyzed_query)
+        if results == []:
+            return []
         if search_type == 'AND':
             # all tokens must be in the document
             documents = [self.documents[doc_id] for doc_id in set.intersection(*results)]
         if search_type == 'OR':
             # only one token has to be in the document
             documents = [self.documents[doc_id] for doc_id in set.union(*results)]
-
         if rank:
             return self.rank(analyzed_query, documents)
         return documents
