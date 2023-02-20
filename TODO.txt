@@ -1,18 +1,40 @@
 
-1) use this implementation, the sqlite one is too slow!
-    https://builtin.com/machine-learning/index-based-search-engine-python
-
-2) Use simple frontend
-    https://plainenglish.io/blog/build-your-own-search-engine-using-python-part-2-abdb6fe3e10b
-
 4) stackoverflow https://ethereum.stackexchange.com/questions/66050/find-the-address-of-the-wallet-know-almost-all-the-letters/144254#144254
 
 5) online question https://www.reddit.com/r/etherscan/comments/wtc5zd/way_to_search_with_partial_address/
 
 6) only query addresses not the full transaction.
 
+7) index 1 million addresses and measure time
+
+8) build dirty MVP frontend in NodeJS
+
+10) sort documents results by ETH balance.
+
+11) add initial "x" and end of address token to expand on queries of type "0xa3f...8a1a"
+
+12) User 4-grams to have smaller lists per n-grams, instead of 3-grams.
+
+13) find fragment that is the most easy to remember (pairs, sequential values, triples) when compressing, example 345bba2
+
 ----------------------------
 
 DONE!
 
 3) DO Filesystem version!! pickle object local files!
+
+9) build API in Python. https://towardsdatascience.com/the-right-way-to-build-an-api-with-python-cd08ab285f8f
+    a) supports http://localhost:5002/expand?fragment=7432..0f67
+    b) supports http://localhost:5002/expand?fragment=743257f
+
+
+------------------------------
+
+FROZEN!
+
+1) use this implementation, the sqlite one is too slow!
+    https://builtin.com/machine-learning/index-based-search-engine-python
+
+2) Use simple frontend
+    https://plainenglish.io/blog/build-your-own-search-engine-using-python-part-2-abdb6fe3e10b
+
